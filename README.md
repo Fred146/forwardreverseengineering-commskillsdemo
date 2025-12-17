@@ -11,13 +11,13 @@ Feel free to open a ticket if you experience any difficulties following the inst
 In this demo, we use Rust as the programming language and Visual Studio Code as the source code editor. You are free to use any platform or tools of your choice, as the outcome will be very similar. You may also skip this chapter entirely if you are only interested in the reverse-engineering part; an executable binary will be provided.
 <br><br>
 
-Initiate a new Rust project via the following command line command in Windows in a directory of your choice:
+Initiate a new Rust project using the following command in Windows, in a directory of your choice:
 ```
 cargo new commskillsdemo
 ```
 <br>
 
-Afterwards open the following file in your source code editor:
+Afterwards, open the following file in your source code editor:
 ```
 src\main.rs
 ```
