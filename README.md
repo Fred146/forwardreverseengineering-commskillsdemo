@@ -1,5 +1,8 @@
 # Forward / Reverse Engineering Demo
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/afc67647-b6f8-475f-a682-c41f9e9b1e92" />
+[(Image courtesy of Triple Infotech)](https://tripleinfotech.com/2024/08/29/reverse-vs-forward-engineering-key-differences-and-when-to-choose)
+
 ## 1. Contact
 Feel free to open a ticket if you experience any difficulties following the instructions below.
 <br><br>
