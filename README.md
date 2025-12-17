@@ -1,20 +1,24 @@
 # Forward / Reverse Engineering Demo
 
+<br>
+
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/afc67647-b6f8-475f-a682-c41f9e9b1e92" />
 [(Image courtesy of Triple Infotech)](https://tripleinfotech.com/2024/08/29/reverse-vs-forward-engineering-key-differences-and-when-to-choose)
 
+<br><br>
+
 ## 1. Navigation
 
-A table of contents is provided by GitHub by clicking on the appropriate button at the top right section of this document.
+A table of contents can be accessed by clicking the appropriate button in the top-right corner of this document.
 
-<img width="751" height="279" alt="{4DE32AC5-EC36-4582-9F01-F32B73F34587}" src="https://github.com/user-attachments/assets/5eb85e2d-5726-42be-9b89-ab52d5f40e3c" />
+<img width="911" height="304" alt="{069D2F70-2685-499E-AC15-E95CD3487171}" src="https://github.com/user-attachments/assets/da2da1f4-9bf7-49ef-9845-34a6c1535282" />
 
-<br>
+<br><br>
 
 ## 2. Contact
 Feel free to open a ticket if you experience any difficulties following the instructions below.
 
-<br>
+<br><br>
 
 ## 3. Forward Engineering
 In this demo, we use **Rust** as the programming language and **Visual Studio Code** as the source code editor. You are free to use any platform or tools of your choice, as the outcome will be very similar. You may also skip this chapter entirely if you are only interested in the reverse-engineering part; an executable binary will be provided.
