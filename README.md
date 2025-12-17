@@ -228,6 +228,8 @@ break;
 }
 ```
 
+Prints "Password incorrect!" to the console when a previous condition is false.
+
 <br><br>
 
 ### 3.4 Summary
