@@ -3,6 +3,7 @@
 <br>
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/afc67647-b6f8-475f-a682-c41f9e9b1e92" />
+
 [(Image courtesy of Triple Infotech)](https://tripleinfotech.com/2024/08/29/reverse-vs-forward-engineering-key-differences-and-when-to-choose)
 
 <br><br>
@@ -21,7 +22,7 @@ Feel free to open a ticket if you experience any difficulties following the inst
 <br><br>
 
 ## 3. Forward Engineering
-In this demo, we use **Rust** as the programming language and **Visual Studio Code** as the source code editor. You are free to use any platform or tools of your choice, as the outcome will be very similar. You may also skip this chapter entirely if you are only interested in the reverse-engineering part; an executable binary will be provided.
+In this demo, we use [**Rust**](https://rust-lang.org) as the programming language and [**Visual Studio Code**](https://code.visualstudio.com) as the source code editor. You are free to use any platform or tools of your choice, as the outcome will be very similar. You may also skip this chapter entirely if you are only interested in the reverse-engineering part; an executable binary will be provided.
 
 <br>
 
@@ -240,6 +241,139 @@ break;
 
 ## 4. Reverse Engineering
 
+We will use the debugger [**x64dbg**](https://x64dbg.com) to reverse engineer our application. If you want the memory addresses to match those shown in the screenshots, you may use the precompiled executable located at **target/release/commskillsdemo.exe** in this repository.
+
+<br>
+
+### 4.1 Setup
+
+Open **commskillsdemo.exe** by double‑clicking it. Enter any text to confirm that the input is rejected. Take note of the error message, as it will be important later.
+
+<br>
+
+<img width="979" height="101" alt="image" src="https://github.com/user-attachments/assets/9417124b-2251-4cc5-abb7-62fb61f5ec23" />
+
+<br><br>
+
+Open **x64dbg** located at **release\x64\x64dbg.exe**. Once the debugger is running, go to the **File** menu and select **Attach**. In the list of processes, choose **commskillsdemo.exe** and click **Attach** to proceed.
+
+<br>
+
+<img width="802" height="432" alt="image" src="https://github.com/user-attachments/assets/402de5fd-bd97-4620-9d12-4c8606e7a98a" />
+
+<br><br>
+
+### 4.2 Code Location
+
+Your debugger window should now look like this:
+
+<img width="870" height="632" alt="image" src="https://github.com/user-attachments/assets/e78f68bf-4ba3-4ee3-a57a-06d2894e596b" />
+
+<br><br>
+
+It might seem complicated at first, but the most important section is the top-left code window. In order, it shows you:
+
+- The **RIP** (Return Instruction Pointer) and lines/arrows indicating code jumps
+- **Memory address locations**
+- **CPU opcodes** (operation codes)
+- **Assembly instructions**
+
+Our next goal is to locate the section of code that triggers the error message. By identifying this location, we can attempt to modify the assembly instructions so that the program always follows the **success path**, regardless of the input provided.
+
+One way to accomplish this is by performing a string search. Right‑click anywhere in the code view to open the context menu, then navigate to:
+
+**Search for → All Modules → String references**
+
+This will open the **References** window, which displays all locations in the binary where string literals are used. In the search input box at the bottom left, enter the error message:
+
+```
+Password incorrect!
+```
+
+You will then be presented with the memory address of the code that references this string. Double‑click the entry to navigate directly to the corresponding code location.
+
+<img width="870" height="632" alt="image" src="https://github.com/user-attachments/assets/17574bb0-0515-41e5-8660-cb2dbb4cd575" />
+
+<img width="870" height="632" alt="image" src="https://github.com/user-attachments/assets/65b2d5bb-e7a3-40af-92c7-8b0de5e627b4" />
+
+<br><br>
+
+### 4.3 Code Reversing - Else Elimination
+
+We land at the memory address **00007FF7343A1694**, which is where the error message we want to avoid appears. By examining the lines above this one, we can see the broader context of what happens before this point, ultimately leading to the execution of the line we want to prevent.
+
+<img width="916" height="100" alt="image" src="https://github.com/user-attachments/assets/84e0ad9d-a8e8-493c-9059-fa02e223fa9d" />
+
+<br><br>
+
+If we take a closer look we can see that the following line jumps to our error message:
+
+```asm
+00007FF7343A167C | 75 1C                    | jne commskillsdemo.7FF7343A169A         |
+```
+
+<br>
+
+This corresponds to the **else** clause in Rust. **jne** stands for "jump if not equal"; in other words, if the user input does not match the password, an error message is displayed. We want to prevent this from happening. In a binary file, you cannot simply remove lines of code, as this would cause the subsequent code to “fall down” and change memory addresses. However, you can overwrite this code with a special operation called **NOP** (no operation). This effectively eliminates the instruction while keeping the file structure intact. To do this, right-click on the line of code, go to **Binary**, and then select **Fill with NOPs**.
+
+<img width="957" height="110" alt="image" src="https://github.com/user-attachments/assets/aaf6412a-e8b3-4c91-8d0b-983ba689b3f5" />
+
+<br><br>
+
+Job done, right? We’ve effectively removed the else statement. However, as you can see below, there’s still some work to be done.
+
+<img width="979" height="130" alt="image" src="https://github.com/user-attachments/assets/a31530a9-3b3c-4e7a-9f77-dd575ac7b0af" />
+
+<br><br>
+
+### 4.4 Code Reversing - If Condition
+
+Our code will no longer perform the jump, but due to the way our Rust source code is translated into assembly, it still roughly follows the same path and ends up at the error message.
+
+This is what the piece of code does, and the first two steps have already been eliminated by our previous actions:
+
+- Evaluate the else statement condition.
+- Jump to the error message if the condition is true.
+- If false, continue executing the code, where a few lines later the if condition is evaluated.
+- The if condition jumps to another location if the password is correct; if not, it proceeds to the next line, which executes the error message.
+
+<br>
+
+```asm
+00007FF7343A167C | 90                       | nop                                     |
+00007FF7343A167D | 90                       | nop                                     |
+00007FF7343A167E | 8B16                     | mov edx,dword ptr ds:[rsi]              | rsi:RtlSetThreadSubProcessTag+A50
+00007FF7343A1680 | 331408                   | xor edx,dword ptr ds:[rax+rcx]          |
+00007FF7343A1683 | 44:0FB746 04             | movzx r8d,word ptr ds:[rsi+4]           | rsi+04:RtlSetThreadSubProcessTag+A54
+00007FF7343A1688 | 6644:334408 04           | xor r8w,word ptr ds:[rax+rcx+4]         |
+00007FF7343A168E | 41:0FB7C0                | movzx eax,r8w                           |
+00007FF7343A1692 | 09D0                     | or eax,edx                              |
+00007FF7343A1694 | 0F84 76010000            | je commskillsdemo.7FF7343A1810          |
+00007FF7343A169A | 48:8D05 0FBA0900         | lea rax,qword ptr ds:[7FF73443D0B0]     | 00007FF73443D0B0:&"Password incorrect!\n"
+```
+
+The last step is being executed at memory location 00007FF7343A1694 which contains a je instruction or jump if equal. This instructions is our if condition in the Rust code which translated to execute this code if the user input equals the password. We want it to always execute this code regardless of condition. In Rust you can achieve this by replacing the condition with just the keyword true. In assembly we can achieve this by changing je to jmp or jump so that it will always jump.
+
+Right click this line of code and pick the Assemble option. Sometimes je is also translated as jz as you can see here which stands for jump if zero. On a lower level the condition evaluates to "zero" or "not zero". Change this jz instruction to jmp instead and press OK. The Assemble window will stay open but move to the next line. We are done changing code so you can proceed to press Cancel to close it.
+
+<img width="922" height="109" alt="image" src="https://github.com/user-attachments/assets/3e717590-0186-4581-af00-a11c553a8dec" />
+
+<br><br>
+
+If we try an incorrect password again we can now see that we succeed to enter the system.
+
+<img width="979" height="165" alt="image" src="https://github.com/user-attachments/assets/3837fe67-c9f6-44ca-abc3-c00d1cfec65e" />
+
+<br><br>
+
 ## 5. Protection
 
+[VMProtect Software](https://vmpsoft.com)
+
+<br>
+
 ## 6. Resources
+
+[W3Schools Rust Tutorial](https://w3schools.com/rust)
+
+[Game Hacking Academy](https://gamehacking.academy)
