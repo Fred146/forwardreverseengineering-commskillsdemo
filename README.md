@@ -332,12 +332,10 @@ Job done, right? We’ve effectively removed the else statement. However, as you
 
 Our code will no longer perform the jump, but due to the way our Rust source code is translated into assembly, it still roughly follows the same path and ends up at the error message.
 
-This is what the piece of code does, and the first two steps have already been eliminated by our previous actions:
+This is what the piece of code does, and the first step has already been eliminated by our previous actions:
 
-- Evaluate the else statement condition.
-- Jump to the error message if the condition is true.
-- If false, continue executing the code, where a few lines later the if condition is evaluated.
-- The if condition jumps to another location if the password is correct; if not, it proceeds to the next line, which executes the error message.
+- Jump to the error message if the condition is false.
+- If the else jump is not taken, execution continues; a few lines later, a jump occurs if the condition is true.
 
 <br>
 
