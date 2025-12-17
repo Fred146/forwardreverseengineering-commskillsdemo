@@ -302,7 +302,7 @@ You will then be presented with the memory address of the code that references t
 
 ### 4.3 Code Reversing - Else Elimination
 
-We land at the memory address **00007FF7343A1694**, which is where the error message we want to avoid appears. By examining the lines above this one, we can see the broader context of what happens before this point, ultimately leading to the execution of the line we want to prevent.
+We land at the memory address **00007FF7343A169A**, which is where the error message we want to avoid appears. By examining the lines above this one, we can see the broader context of what happens before this point, ultimately leading to the execution of the line we want to prevent.
 
 <img width="916" height="100" alt="image" src="https://github.com/user-attachments/assets/84e0ad9d-a8e8-493c-9059-fa02e223fa9d" />
 
