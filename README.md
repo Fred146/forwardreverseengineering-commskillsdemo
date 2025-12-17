@@ -352,9 +352,9 @@ This is what the piece of code does, and the first two steps have already been e
 00007FF7343A169A | 48:8D05 0FBA0900         | lea rax,qword ptr ds:[7FF73443D0B0]     | 00007FF73443D0B0:&"Password incorrect!\n"
 ```
 
-The last step is being executed at memory location 00007FF7343A1694 which contains a je instruction or jump if equal. This instructions is our if condition in the Rust code which translated to execute this code if the user input equals the password. We want it to always execute this code regardless of condition. In Rust you can achieve this by replacing the condition with just the keyword true. In assembly we can achieve this by changing je to jmp or jump so that it will always jump.
+The last step is being executed at memory location **00007FF7343A1694**, which contains a **je** instruction (jump if equal). This instruction corresponds to the **if** condition in the Rust code, which executes this code only if the user input matches the password. We want it to always execute this code, regardless of the condition. In Rust, you can achieve this by replacing the condition with the keyword **true**. In assembly, we can achieve the same effect by changing **je** to **jmp**, which always jumps unconditionally.
 
-Right click this line of code and pick the Assemble option. Sometimes je is also translated as jz as you can see here which stands for jump if zero. On a lower level the condition evaluates to "zero" or "not zero". Change this jz instruction to jmp instead and press OK. The Assemble window will stay open but move to the next line. We are done changing code so you can proceed to press Cancel to close it.
+Right-click this line of code and select the **Assemble** option. Sometimes **je** is also represented as **jz** (jump if zero), which at a lower level checks whether a value is zero or not. Change this **jz** instruction to **jmp** and press **OK**. The **Assemble** window will remain open but move to the next line. Since we are done modifying the code, you can now press **Cancel** to close it.
 
 <img width="922" height="109" alt="image" src="https://github.com/user-attachments/assets/3e717590-0186-4581-af00-a11c553a8dec" />
 
