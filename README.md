@@ -3,17 +3,25 @@
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/afc67647-b6f8-475f-a682-c41f9e9b1e92" />
 [(Image courtesy of Triple Infotech)](https://tripleinfotech.com/2024/08/29/reverse-vs-forward-engineering-key-differences-and-when-to-choose)
 
-## 1. Contact
+## 1. Navigation
+
+A table of contents is provided by GitHub by clicking on the appropriate button at the top right section of this document.
+
+<img width="751" height="279" alt="{4DE32AC5-EC36-4582-9F01-F32B73F34587}" src="https://github.com/user-attachments/assets/5eb85e2d-5726-42be-9b89-ab52d5f40e3c" />
+
+<br>
+
+## 2. Contact
 Feel free to open a ticket if you experience any difficulties following the instructions below.
 
 <br>
 
-## 2. Forward Engineering
+## 3. Forward Engineering
 In this demo, we use **Rust** as the programming language and **Visual Studio Code** as the source code editor. You are free to use any platform or tools of your choice, as the outcome will be very similar. You may also skip this chapter entirely if you are only interested in the reverse-engineering part; an executable binary will be provided.
 
 <br>
 
-### 2.1 Project Initiation
+### 3.1 Project Initiation
 
 Initiate a new **Rust** project using the following command in **Windows**, in a directory of your choice:
 ```
@@ -33,7 +41,7 @@ src\main.rs
 
 <br><br>
 
-### 2.2 Source Code
+### 3.2 Source Code
 
 You will be presented with the following code:
 
@@ -90,9 +98,9 @@ fn main() {
 
 <br><br>
 
-### 2.3 In-depth Analysis
+### 3.3 In-depth Analysis
 
-#### 2.3.1 Imports
+#### 3.3.1 Imports
 
 ```rust
 use std::{io::{Write, stdin, stdout}, thread::sleep, time::Duration};
@@ -108,7 +116,7 @@ This line imports functionality from the Rust standard library:
 
 <br>
 
-#### 2.3.2 Program Entry Point
+#### 3.3.2 Program Entry Point
 
 ```rust
 fn main() {
@@ -118,7 +126,7 @@ The **main** function is the entry point of the program.
 
 <br>
 
-#### 2.3.3 Stored Password
+#### 3.3.3 Stored Password
 
 ```rust
 let password = String::from("SECRET");
@@ -128,7 +136,7 @@ A **String** containing the hard‑coded password. User input is compared agains
 
 <br>
 
-#### 2.3.4 Infinite Loop
+#### 3.3.4 Infinite Loop
 
 ```rust
 loop {
@@ -138,7 +146,7 @@ Creates an infinite loop that continues until a **break** statement is executed.
 
 <br>
 
-#### 2.3.5 Input Buffer
+#### 3.3.5 Input Buffer
 
 ```rust
 let mut input: String = String::new();
@@ -148,7 +156,7 @@ Allocates a mutable string to store user input.
 
 <br>
 
-#### 2.3.6 User Prompt
+#### 3.3.6 User Prompt
 
 ```rust
 print!("Enter your password: ");
@@ -160,7 +168,7 @@ stdout().flush().expect("Failed to flush stdout!");
 
 <br>
 
-#### 2.3.7 Reading User Input
+#### 3.3.7 Reading User Input
 
 ```rust
 stdin()
@@ -173,7 +181,7 @@ The newline character (**\n**) is included.
 
 <br>
 
-#### 2.3.8 Trimming Input
+#### 3.3.8 Trimming Input
 
 ```rust
 let input: &str = input.trim();
@@ -183,7 +191,7 @@ Removes leading and trailing whitespace, including the newline character.
 
 <br>
 
-#### 2.3.9 Password Comparison
+#### 3.3.9 Password Comparison
 
 ```rust
 if password == input {
@@ -193,7 +201,7 @@ Compares the trimmed user input with the stored password.
 
 <br>
 
-#### 2.3.10 Correct Password Case
+#### 3.3.10 Correct Password Case
 
 ```rust
 println!("Correct password!");
@@ -207,7 +215,7 @@ break;
 
 <br>
 
-#### 2.3.11 Incorrect Password Case
+#### 3.3.11 Incorrect Password Case
 
 ```rust
 } else {
@@ -217,7 +225,7 @@ break;
 
 <br><br>
 
-### 2.4 Summary
+### 3.4 Summary
 
 - Prompts the user for a password
 - Compares input to a hard‑coded value
@@ -226,8 +234,8 @@ break;
 
 <br>
 
-## 3. Reverse Engineering
+## 4. Reverse Engineering
 
-## 4. Protection
+## 5. Protection
 
-## 5. Resources
+## 6. Resources
